@@ -1,0 +1,21 @@
+table{
+    width: 98%;
+    margin-top: 20px;
+}
+th {
+    background-color: rgb(67, 133, 231);
+    color: white; 
+    padding-left:10px;
+padding-right:10px;
+padding-top: 10px;
+padding-bottom: 10px;
+width: 120px;
+  }
+  td{
+    padding-left:10px;
+    padding-right:10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    width: 120px;
+    border-bottom: 1px solid rgb(207, 203, 203);
+ }

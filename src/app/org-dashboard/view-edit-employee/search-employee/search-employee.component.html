@@ -1,0 +1,71 @@
+<div  style="margin-bottom: 20px; margin-right:10px;">
+
+        <div style="width:100%;">
+            <div class="input-group">
+                <div class="input-group-addon">
+      <select style="width:120px; height:30px;" class="form-control" id="sel1">
+        <option disabled>Search by</option>
+        <option *ngFor="let item of arr1;" >{{item}}</option>
+        
+        
+      </select>
+                    </div>
+                <input  id="search" style="height:50px;" type="text" class="form-control" placeholder="">
+                <span class="input-group-addon ">
+                   <span (click)="search()" class="glyphicon glyphicon-search"> </span>
+           
+
+                </span>
+                
+            </div>
+        </div>
+    
+</div>
+
+<!-- <div id="div" *ngFor="let item of filter;">
+        <div *ngFor="let keyy of ObjectKeys(item);" class="card-body">
+                <div  class="form-group">
+                    <label for="{{keyy}}">{{keyy}}</label>
+                    <input type="text" class="form-control" id="{{i}}" name="{{keyy}}"  placeholder="{{item[keyy]}}" readonly="readonly"/>
+                    
+                </div>     
+            </div>
+</div> -->
+
+
+<div *ngIf="loaded==0" style="margin:auto;" class="loader"> </div>
+<!-- <div style="margin-right:10px;" *ngIf="data==0" class="alert alert-info">
+        <strong>Info!</strong> No record found.
+      </div> -->
+
+<ng-container>
+        <div style="margin-right:10px;" *ngIf="loaded==1" class="alert alert-success">
+               {{total}} record(s) found.
+              </div>
+<div  *ngFor="let item of data; let i = index"  class="card" >
+    <form name="form"  id={{i}} #f="ngForm">
+     <div class="alert alert-info">
+      <strong>{{i+1}}</strong> 
+      </div>
+    <div *ngFor="let keyy of ObjectKeys(item);" class="card-body">
+        <div  class="form-group">
+            <label for="{{keyy}}">{{keyy}}</label>
+            <input type="text" class="form-control" id="{{i}}" name="{{keyy}}" value="{{item[keyy]}}"  placeholder="{{item[keyy]}}" readonly="readonly"/>
+            
+        </div>     
+    </div>
+    <div style="display:none"  id="info{{i}}" class="alert alert-success" >
+        <strong>Success!</strong> Record updated.
+      </div>
+    <div>
+            <button type="button" value="Edit" (click)="edit($event)" id="{{i}}" name="Edit{{i}}" class="btn btn-primary"> Edit </button>
+            <button  style="margin-left:20px;" (click)="update($event)" id="{{i}}" name="Update{{i}}" class="btn btn-success" disabled="disabled"> Update </button>
+            <button  style="margin-left:20px;" type="button"  id="{{i}}" (click)="cancel($event)" name="Cancel{{i}}" class="btn btn-danger" disabled="disabled">Cancel</button>
+            <span id="{{i}}" style="display:none;">
+            <button  style="display:inline-block;margin-left: 20px; background-color: white;"  class="loader1"></button>
+            </span>
+        </div>
+</form>
+    
+  </div>
+</ng-container>

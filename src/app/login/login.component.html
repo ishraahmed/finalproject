@@ -1,0 +1,76 @@
+<form  name="form" (ngSubmit)="f.form.valid && onSubmit();" #f="ngForm" novalidate style="border:1px solid #ccc">
+    <div class="container">
+      <h1>Login</h1>
+      <hr>
+      
+    <div class="form-group">
+        <label for="Username">Username</label>
+        <input type="text" (click)="fuc()" class="form-control" name="Username" [(ngModel)]="model.Username" #Username="ngModel" [ngClass]="{ 'is-invalid': f.submitted && Username.invalid }" required  />
+        <div *ngIf="f.submitted && Username.invalid" class="invalid-feedback">
+            <div style="color:red;" *ngIf="Username.errors.required">Email is required</div>
+            <!-- <div style="color:red;" *ngIf="email.errors.email">Email must be a valid email address</div> -->
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" (click)="fuc()" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+        <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+            <div style="color:red;" *ngIf="password.errors.required">Password is required</div>
+            <div style="color:red;" *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+    </div>
+
+
+        <div style="color:red;"> {{abc}} </div>
+       
+      <br>
+    
+      <div class="clearfix">
+            <button type="submit"  class="signupbtn">Login</button>
+            <!-- <div class="cancelbtn" *ngIf="ab==2" class="loader"></div> -->
+        <div *ngIf="ab==2" type="button" class="cancelbtn">
+            <div  class="loader"></div> 
+        </div>
+        
+      </div>
+      <!-- <br>
+      <p><b>Don't have an account? </b></p>
+      <button (click)="onSignup();" type="button" class="cancelbtn11">Sign Up </button> -->
+    </div>
+  </form>
+<!-- 
+<form  name="form" (ngSubmit)="f.form.valid && onSubmit();" #f="ngForm" novalidate style="border:1px solid #ccc">
+    <div class="container">
+      <h1>Login</h1>
+      <hr>
+      
+    <div class="form-group">
+        <label for="Username">Username</label>
+        <input type="text" (click)="fuc()" class="form-control" name="Username" [(ngModel)]="model.Username" #Username="ngModel" [ngClass]="{ 'is-invalid': f.submitted && Username.invalid }" required  />
+        <div *ngIf="f.submitted && Username.invalid" class="invalid-feedback">
+            <div style="color:red;" *ngIf="Username.errors.required">Email is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" (click)="fuc()" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6" />
+        <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+            <div style="color:red;" *ngIf="password.errors.required">Password is required</div>
+            <div style="color:red;" *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+    </div>
+
+
+        <div style="color:red;"> {{abc}} </div>
+       
+      <br>
+    
+      <div class="clearfix">
+            <button type="submit"  class="signupbtn">Login</button>
+        <div *ngIf="ab==2" type="button" class="cancelbtn">
+            <div  class="loader"></div> 
+        </div>
+        
+      </div>
+    </div>
+  </form> -->

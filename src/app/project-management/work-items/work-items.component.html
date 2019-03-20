@@ -1,0 +1,725 @@
+<h1 *ngIf="isMember==0">
+  this user is not part of this project
+</h1>
+<div *ngIf="isMember!=0" class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">add work item
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a data-toggle="modal" data-target="#userStoryModal" (click)="addUs()"> <span class="glyphicon glyphicon-book"></span> User Story</a></li>
+      <li><a data-toggle="modal" data-target="#taskModal" (click)="addTask()">  <span class="glyphicon glyphicon-list-alt"> </span> Task</a></li>
+      <li><a data-toggle="modal" data-target="#bugModal" (click)="addBug()"> <span class="glyphicon glyphicon-fire"></span> Bug</a></li>
+     
+    </ul>
+  </div>
+  <table *ngIf="isMember!=0">
+    <thead>
+      <th>
+          Title
+      </th>
+      <th>
+        Assigned to
+      </th>
+      <th>
+        State
+      </th>
+      <th>
+       Iteration
+      </th>
+    </thead>
+    <tbody>
+<tr *ngFor="let item of userStory">
+  <td><span  class="glyphicon glyphicon-book"></span> <a id="{{item['us_id']}}" (click)="UsEdit($event)"  data-toggle="modal" data-target="#userStoryModal"> {{item['title']}} </a>
+  </td>
+  <td> {{item['assigned_to']}} </td>
+  <td> {{item['state']}} </td>
+  <td> {{item['iteration']}} </td>
+</tr>
+  <tr *ngFor="let i of tasks">
+   <td><span class="glyphicon glyphicon-list-alt"> </span><a id="{{i['us_id']}}.{{i['task_id']}}" (click)="TaskEdit($event)" data-toggle="modal" data-target="#taskModal" >  {{i['title']}} </a>
+   </td>
+   <td> {{i['assigned_to']}}</td>
+   <td> {{i['state']}} </td>
+  <td> {{i['iteration']}} </td>
+  </tr>
+
+   <tr *ngFor="let i of bugs">
+    <td><span class="glyphicon glyphicon-fire"> </span><a id="{{i['us_id']}}.{{i['task_id']}}.{{i['bug_id']}}" (click)="BugEdit($event)" data-toggle="modal" data-target="#bugModal">  {{i['title']}} </a>
+    </td>
+    <td>{{i['assigned_to']}} </td>
+      <td> {{i['state']}} </td>
+  <td> {{i['iteration']}} </td>
+    
+    </tr>
+    
+
+    </tbody>
+  </table>
+<div id="userStoryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 style="color:#0B0B3B ;" class="modal-title"><span style="color:#0B0B3B;" class="glyphicon glyphicon-book"></span> {{USModalHeader}}</h4>
+            
+        </div>
+        <form name="form" (ngSubmit)="ff.form.valid && saveUserStory();" id="myForm" #ff="ngForm" novalidate>
+        <div style="overflow: auto;" class="modal-body">
+            <div *ngIf="usEdit==1" class="form-group">
+            <label style="float:left;">Title</label>
+            <input id="UStitle" class="form-control" style="float:left; width:50%; margin-left: 63px;" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': ff.submitted && title.invalid }"  />
+          </div>
+          <div *ngIf="usEdit==0"  class="form-group">
+            <label style="float:left;">Title</label>
+            <input id="UStitle" class="form-control" style="float:left; width:50%; margin-left: 63px;" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': ff.submitted && title.invalid }" required  />
+           
+            <div *ngIf="ff.submitted && title.invalid" class="invalid-feedback">
+             
+                <div style="color:red; clear: both; " *ngIf="title.errors.required">Title is required</div>
+           </div>
+          
+          </div>
+        
+            <div class="form-group">
+                <label style=" display: block;clear: both; float:left; margin-top:10px;">assigned to: </label>
+                <input id="USassigned" (click)="assignedClick()" style=" display: block; width:50%; margin-left:10px; margin-top:10px; float:left;" pattern="[a-zA-Z]+\s\s\({1}[a-zA-Z]{1}\.[a-zA-Z0-9]+[0-9]+\){1}" type="text" class="form-control" name="assigned" list="browsers" [(ngModel)]="model.assigned_to" #assigned="ngModel" [ngClass]="{ 'is-invalid': ff.submitted && assigned.invalid }"  />
+                 
+                 <datalist id="browsers">
+                     <option *ngFor="let item of emp" value="{{item['name']}}({{item['username']}})" ></option>                  
+                 </datalist>
+                 <div *ngIf="assignmentError==1">
+                 <br>
+                 <br>
+                 <p style="clear: both;"style="color:red;">please select from the list</p>
+               </div>
+                 <div style="clear:both" *ngIf="ff.submitted && assigned.invalid" class="invalid-feedback">
+                     <div style="color:red;" *ngIf="assigned.errors.pattern">please select from the list</div>
+                </div>
+             </div>
+
+             <div class="form-group">
+                            
+                <label style=" display: block;clear: both; float:left;  margin-top: 10px;">state: </label>
+                <select  id="USstate" name="state" [(ngModel)]="model.state" #state="ngModel" class="form-control"  style=" display: block; margin-left: 10px; float:left; margin-top: 10px; width: 200px;">
+                      <option selected="selected" value="New" >New</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Accepted">Accepted</option>
+                      <option value="deleted">Deleted</option>
+                    </select>
+             </div>
+         
+       
+        <div class="form-group">
+
+        <label style=" display: block; float:left; margin-left: 20px;  margin-top: 10px;">Iteration: </label>
+        <input class="form-control" (click)="iterationClick()" [(ngModel)]="model.iteration" id="USiteration" #iteration="ngModel" style=" display: block;   margin-left: 10px; float:left; margin-top: 10px; width: 200px;" list="browsers2"  name="browser">
+        <datalist id="browsers2"  >
+          <option *ngFor="let item of iterations" value="{{item['title']}}">               
+        </datalist>
+        
+        <div style="clear: both;" *ngIf="iterationError==1">
+        
+          <p style="color:red;">please select from the list</p>
+        </div>     
+        
+        <!-- <button style="float: right; margin-top: 10px; margin-left:10px;" class="btn btn-warning" (click)="history($event)" id="history">history</button>   
+       
+        <button type="button" style="float: right; margin-top: 10px;"class="btn btn-info" (click)="details($event)" id="details" >details</button>
+            -->
+              <!-- <input style="float:left; margin-left: 10px;" type="submit"> -->
+              <div  id="divdetails" >
+              <div style="float:left; width:70%; margin-top: 20px;">
+             <div style="clear:both;" >
+                    <div class="panel panel-info">
+                            <div style="height:40px;" class="panel-heading">
+                                    <label style="clear:both; float:left;">Description</label>
+                                    <p>
+                    
+                                    <!-- <a class="btn btn-primary" >
+                                            Link with href
+                                          </a>  -->
+                                          <a id="arrowup" (click)="arrowup()"  style="display: none; float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                 <span class="glyphicon glyphicon-chevron-up"></span>
+                                               </a>
+             
+                                          <a id="arrowdown" (click)="arrowdown()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                     <span class="glyphicon glyphicon-chevron-down"></span>
+                                                   </a>
+                            
+                                        </p>
+                            </div>
+                            <div class="panel-body">
+                                    <div style="clear:both;" class="collapse" id="collapseExample">
+                                            <div class="card card-body">
+                                            <textarea id="USdescription" [(ngModel)]="model.desciption" name="description" #description="ngModel" ></textarea>
+                                            </div>
+                                          </div>
+                            </div>
+                          </div>
+                           
+                </div>
+
+                <div style="clear:both;" >
+                        <div class="panel panel-success">
+                                <div style="height:40px;" class="panel-heading">
+                                        <label style="clear:both; float:left; ">Acceptance Criteria</label>
+                                        <p>
+                        
+                                        <!-- <a class="btn btn-primary" >
+                                                Link with href
+                                              </a>  -->
+                                              <a id="arrowup2" (click)="arrowup2()"  style="display: none; float:left; margin-left: 20px;  " data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                     <span style="color:green" class="glyphicon glyphicon-chevron-up"></span>
+                                                   </a>
+                 
+                                              <a id="arrowdown2" (click)="arrowdown2()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                         <span style="color:green" class="glyphicon glyphicon-chevron-down"></span>
+                                                       </a>
+                                
+                                            </p>
+                                </div>
+                                <div class="panel-body">
+                                        <div style="clear:both;" class="collapse" id="collapseExample1">
+                                                <div class="card card-body">
+                                                <textarea id="USacceptance_criteria" [(ngModel)]="model.acceptance_criteria" name="acceptanceCriteria" #acceptanceCriteria="ngModel"></textarea>
+                                                </div>
+                                              </div>
+                                </div>
+                              </div>
+                        
+                              
+                    </div>
+                    
+                </div>
+                <div style=" margin-left: 72%; ">
+                    <div style=" float: left; margin-top: 20px; width:100%;">
+                            <div class="panel panel-info">
+                                    <div class="panel-heading" style="height:40px; ">
+                                            <label style="float:left; " >Planning</label>
+                                            <a id="arrowup3" (click)="arrowup3()" style=" margin-left:10px;float:left;display: none;" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                                            <a id="arrowdown3" (click)="arrowdown3()" style=" margin-left:10px;float:left; " data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                                    </div>
+                                    <div class="panel-body">
+                                            <div style="clear:left;margin-top:0px;" class="collapse" id="collapseExample2">
+                                                    <div >
+                                                    <label style="float:left;text-align: left;" >story points</label>
+                                                    <input id="USstory_points"   class="form-control" type="number" [(ngModel)]="model.story_points" name="storypoints" #story_points="ngModel" />
+                                                    <label style="float:left; text-align: left; margin-top: 10px;" >priority</label>
+                                                    <select class="form-control" id="USpriority" [(ngModel)]="model.priority" name="priority" #priority="ngModel" >
+                                                          <option value="1">1</option>
+                                                          <option value="2">2</option>
+                                                          <option value="3">3</option>
+                                                          <option value="4">4</option>
+                                                        </select>
+                                                    </div>
+                                                  </div>
+                                    </div>
+                                  </div>
+                        
+
+                            
+                    </div>
+                       
+                            
+                    </div>
+                    </div>
+                <!-- <div style="clear:both;float:left;margin-top: 10px; display:none;" id="divhistory" >
+                    <li *ngFor="let item of stateHistory" > {{item}} </li>
+                </div> -->
+        </div>
+
+
+          </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success"> Save </button>
+          <button style="margin-left:10px;" (click)="closeUsForm()" class="btn btn-danger" data-dismiss="modal" >close</button>
+        </div>
+      </form>
+      </div>
+  
+    </div>
+  </div>
+
+
+
+  <div id="taskModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+    
+             
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 style="color:#0B0B3B ;" class="modal-title"><span style="color:#0B0B3B;" class="glyphicon glyphicon-list-alt"></span> {{taskModalHeader}}</h4>
+                </div>
+          
+               <form name="form" (ngSubmit)="form.form.valid && saveTask();" id="taskForm" #form="ngForm" novalidate>
+
+                <div style="overflow: auto;" class="modal-body">
+                   <div *ngIf="taskEdit==0;" class="form-group">
+                          <label for="title"><mark style="background-color:white;color:red;">*</mark> Title</label>
+                          <input style="width:50%; display:inline; margin-left: 50px; " id="Tasktitle" type="text" class="form-control" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': form.submitted && title.invalid }" required  />
+                         
+                          <div *ngIf="form.submitted && title.invalid" class="invalid-feedback">
+                              <div style="color:red;" *ngIf="title.errors.required">Title is required</div>
+                         </div>
+                      </div>
+                      <div *ngIf="taskEdit==1;" class="form-group">
+                              <label for="title"><mark style="background-color:white;color:red;">*</mark> Title</label>
+                              <input style="width:50%; display:inline; margin-left: 50px; " id="Tasktitle" type="text" class="form-control" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': form.submitted && title.invalid }"  />                           
+                      </div>  
+                 
+               <div class="form-group">
+                     <label style=" display: block;clear: both; float:left;">assigned to: </label>
+                     <input (click)="assignedClick()" id="Taskassigned" style=" display: block; width:50%; margin-left:  10px; float:left;" pattern="[a-zA-Z]+\s\s\({1}[a-zA-Z]{1}\.[a-zA-Z0-9]+[0-9]+\){1}" type="text" class="form-control" name="assigned" list="browsers" [(ngModel)]="model.assigned" #assigned="ngModel" [ngClass]="{ 'is-invalid': ff.submitted && assigned.invalid }"  />
+                      
+                      <datalist id="browsers">
+                          <option *ngFor="let item of emp" value="{{item['name']}}  ({{item['username']}})" ></option>                  
+                      </datalist>
+                      <div *ngIf="assignmentError==1">
+                      <br>
+                      <br>
+                      <p style="clear: both;"style="color:red;">please select from the list</p>
+                    </div>
+                      <div style="clear:both" *ngIf="form.submitted && assigned.invalid" class="invalid-feedback">
+                          <div style="color:red;" *ngIf="assigned.errors.pattern">please select from the list</div>
+                     </div>
+                  </div>
+
+                  <div *ngIf="taskEdit==0" class="form-group">
+                      <label style=" display: block;clear: both; float:left; margin-top:10px;"><mark style="background-color:white;color:red;">*</mark> link: </label>
+                      <input style=" display: block; width:50%; margin-left:50px; float:left; margin-top:10px;"  (click)="UsClick()" id="Taskuserstory" pattern="[0-9]+"   type="text" class="form-control" name="userstory" list="browsers3" [(ngModel)]="model.userstory" #userstory="ngModel"  [ngClass]="{ 'is-invalid': form.submitted && userstory.invalid }"  required/>
+                    
+                       <datalist id="browsers3">
+                           <option *ngFor="let item of userStory" value="{{item['us_id']}}" > {{item['title']}}</option>                  
+                       </datalist>
+                       <div *ngIf="UsError==1">
+                       <br>
+                       <br>
+                       <p style="color:red;clear: both;">please select from the list</p>
+                     </div>
+
+                       <div style="clear:both" *ngIf="form.submitted && userstory.invalid" class="invalid-feedback">
+                          <div style="color:red;" *ngIf="userstory.errors.required">Link is required</div>
+                           <div style="color:red;" *ngIf="userstory.errors.pattern">please select from the list</div>
+                      </div>
+                   </div>
+                   <div *ngIf="taskEdit==1" class="form-group">
+                    <label style=" display: block;clear: both; float:left; margin-top:10px;"><mark style="background-color:white;color:red;">*</mark> link: </label>
+                    <input style=" display: block; width:50%; margin-left:50px; float:left; margin-top:10px;"  (click)="UsClick()" id="Taskuserstory" pattern="[0-9]+"   type="text" class="form-control" name="userstory" list="browsers3" [(ngModel)]="model.userstory" #userstory="ngModel"  [ngClass]="{ 'is-invalid': form.submitted && userstory.invalid }"  />
+                  
+                     <datalist id="browsers3">
+                         <option *ngFor="let item of userStory" value="{{item['us_id']}}" > {{item['title']}}</option>                  
+                     </datalist>
+                     <div *ngIf="UsError==1">
+                     <br>
+                     <br>
+                     <p style="color:red;clear: both;">please select from the list</p>
+                   </div>
+
+                     <div style="clear:both" *ngIf="form.submitted && userstory.invalid" class="invalid-feedback">
+                        <div style="color:red;" *ngIf="userstory.errors.pattern">please select from the list</div>
+                    </div>
+                 </div>
+                  
+
+
+
+                  <div class="form-group">
+                          
+                          <label style=" display: block;clear: both; float:left;  margin-top: 10px;">state: </label>
+                          <select  id="Taskstate" name="state" [(ngModel)]="model.state" #state="ngModel" class="form-control"  style=" display: block; margin-left: 10px; float:left; margin-top: 10px; width: 200px;">
+                                <option selected="selected" value="New" >New</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Accepted">Accepted</option>
+                                <option value="deleted">Deleted</option>
+                              </select>
+                       </div>
+                   
+                      
+                 
+                  <div class="form-group">
+    
+                  <label style=" display: block; float:left; margin-left: 20px;  margin-top: 10px;">Iteration: </label>
+                  <input class="form-control" (click)="iterationClick()" [(ngModel)]="model.iteration" id="iteration" #iteration="ngModel" style=" display: block;   margin-left: 10px; float:left; margin-top: 10px; width: 200px;" list="browsers2" id="Taskiteration" name="browser">
+                  <datalist id="browsers2"  >
+                    <option *ngFor="let item of iterations" value="{{item['title']}}">               
+                  </datalist>
+                  
+                  <div style="clear: both;" *ngIf="iterationError==1">
+                  
+                    <p style="color:red;">please select from the list</p>
+                  </div>                  
+                  </div>
+
+                   <!-- <button style="float: right; margin-top: 10px; margin-left:10px;" class="btn btn-warning" (click)="history($event)" id="history">history</button>   
+                   
+                  <button style="float: right; margin-top: 10px;"class="btn btn-info" (click)="details($event)" id="details" >details</button>
+                -->
+                  <div  id="divdetails" >
+                  <div style="float:left; width:70%; margin-top: 20px;">
+                 <div style="clear:both;" >
+                        <div class="panel panel-info">
+                                <div style="height:40px;" class="panel-heading">
+                                        <label style="clear:both; float:left;">Description</label>
+                                </div>
+                                <div class="panel-body">
+                                        <div style="clear:both;" id="collapseExample">
+                                            
+                                                <textarea  style="width:100%;height:100px;" id="Taskdescription" [(ngModel)]="model.description" name="description" #description="ngModel"></textarea>
+                                              
+                                              </div>
+                                </div>
+                              </div>
+                        
+                               
+                    </div>
+    
+                        
+                    </div>
+                    <div style=" margin-left: 72%; ">
+                        <div style=" float: left; margin-top: 20px; width:100%;">
+                                <div class="panel panel-info">
+                                        <div class="panel-heading" style="height:40px; ">
+                                                <label style="float:left; " >Planning</label>
+                                                <a id="arrowup3" (click)="arrowup3()" style=" margin-left:10px;float:left;display: none;" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                                                <a id="arrowdown3" (click)="arrowdown3()" style=" margin-left:10px;float:left; " data-toggle="collapse" href="#collapseExample2task" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                                        </div>
+                                        <div class="panel-body">
+                                                <div style="clear:left;margin-top:0px;" class="collapse" id="collapseExample2task">
+                                                        <div  >
+                                                        <label style="float:left; text-align: left;">priority</label>
+                                                        <select class="form-control" id="Taskpriority" [(ngModel)]="model.priority" name="priority" #priority="ngModel" >
+                                                              <option value="1">1</option>
+                                                              <option value="2">2</option>
+                                                              <option value="3">3</option>
+                                                              <option value="4">4</option>
+                                                            </select>
+                                                        </div>
+                                                      </div>
+                                        </div>
+                                      </div>
+                            
+    
+                                
+                        </div>
+                           
+                                
+                        </div>
+
+                        <div style=" margin-left: 72%; ">
+                              <div style=" float: left;width:100%;">
+                                      <div class="panel panel-info">
+                                              <div class="panel-heading" style="height:40px; ">
+                                                      <label style="float:left; ">Effort(hours)</label>
+                                                      <a id="arrowup3" (click)="arrowup3()" style=" margin-left:10px;float:left;display: none;" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                                                      <a id="arrowdown3" (click)="arrowdown3()" style=" margin-left:10px;float:left; " data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                                              </div>
+                                              <div class="panel-body">
+                                                      <div style="clear:left;margin-top:0px;" class="collapse" id="collapseExample3">
+                                                              <div  >
+                                                              <label style="float:left;text-align: left;">Original Estimate</label>
+                                                              <input id="Task_original_estimate"  class="form-control" type="number" [(ngModel)]="model.OriginalEstimate" name="OriginalEstimate" #OriginalEstimate="ngModel" />
+                                                              <label style="float:left;text-align: left;">Remaining</label>
+                                                              <input id="Task_remaining"  class="form-control" type="number"[(ngModel)]="model.RemainingTime" name="RemainingTime" #RemainingTime="ngModel" />
+                                                              <label style="float:left;text-align: left;">Completed</label>
+                                                              <input id="Task_completed"  class="form-control" type="number" [(ngModel)]="model.CompletedTime" name="CompletedTime" #CompletedTime="ngModel" />
+                                                              </div>
+                                                            </div>
+                                              </div>
+                                            </div>
+                                  
+          
+                                      
+                              </div>
+                                 
+                                      
+                              </div>
+                        </div>
+             
+                </div>
+          
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success"   >Save</button>
+               <button (click)="closeTaskForm()" data-dismiss="modal" class="btn btn-danger" >close</button>
+                </div>
+              </form>
+              </div>
+          
+            </div>
+
+</div>
+
+
+<div id="bugModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+  
+           
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 style="color:#0B0B3B ;" class="modal-title"><span style="color:#0B0B3B;" class="glyphicon glyphicon-fire"></span> {{bugModalHeader}}</h4>
+              </div>
+        
+             <form name="bugform" (ngSubmit)="bugform.form.valid && saveBug();" id="bugform" #bugform="ngForm" novalidate>
+
+              <div style="overflow: auto;" class="modal-body">
+                 <div *ngIf="bugEdit==0;" class="form-group">
+                        <label for="title"><mark style="background-color:white;color:red;">*</mark> Title</label>
+                        <input style="width:50%; display:inline; margin-left: 50px; " id="bugtitle" type="text" class="form-control" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': bugform.submitted && title.invalid }" required  />
+                       
+                        <div *ngIf="bugform.submitted && title.invalid" class="invalid-feedback">
+                            <div style="color:red;" *ngIf="title.errors.required">Title is required</div>
+                       </div>
+                    </div>
+                    <div *ngIf="bugEdit==1;" class="form-group">
+                            <label for="title"><mark style="background-color:white;color:red;">*</mark> Title</label>
+                            <input style="width:50%; display:inline; margin-left: 50px; " id="bugtitle" type="text" class="form-control" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': bugform.submitted && title.invalid }"  />                           
+                    </div>  
+               
+             <div class="form-group">
+                   <label style=" display: block;clear: both; float:left;">assigned to: </label>
+                   <input (click)="assignedClick()" id="bugassigned" style=" display: block; width:50%; margin-left:  10px; float:left;" pattern="[a-zA-Z]+\s\s\({1}[a-zA-Z]{1}\.[a-zA-Z0-9]+[0-9]+\){1}" type="text" class="form-control" name="assigned" list="browsers" [(ngModel)]="model.assigned_to" #assigned="ngModel" [ngClass]="{ 'is-invalid': bugform.submitted && assigned.invalid }"  />
+                    
+                    <datalist id="browsers">
+                        <option *ngFor="let item of emp" value="{{item['name']}}  ({{item['username']}})" ></option>                  
+                    </datalist>
+                    <div *ngIf="assignmentError==1">
+                    <br>
+                    <br>
+                    <p style="clear: both;"style="color:red;">please select from the list</p>
+                  </div>
+                    <div style="clear:both" *ngIf="bugform.submitted && assigned.invalid" class="invalid-feedback">
+                        <div style="color:red;" *ngIf="assigned.errors.pattern">please select from the list</div>
+                   </div>
+                </div>
+
+                <div *ngIf="bugEdit==1" class="form-group">
+                  <label style=" display: block;clear: both; float:left; margin-top:10px;"><mark style="background-color:white;color:red;">*</mark> link: </label>
+                 <div style=" display: block; width:50%; margin-left:50px; float:left; margin-top:10px;">
+                  <label  (click)="radioUS()" class="radio-inline"><input type="radio" id="radioUs" name="optradio" checked>User Story</label>
+                  <label  (click)="radioTask()" class="radio-inline"><input type="radio" id="radioTask" name="optradio">Task</label>
+                </div> 
+                  <input style=" display: block; width:50%; margin-left:50px; float:left; margin-top:10px;"  (click)="UsClick()" id="buglink" pattern="[0-9]+"   type="text" class="form-control" name="link" list="browsers3bug" [(ngModel)]="model.link" #link="ngModel"  [ngClass]="{ 'is-invalid': bugform.submitted && link.invalid }" />
+                
+                   <datalist *ngIf="bugLink==1" id="browsers3bug">
+                       <option *ngFor="let item of userStory" value="{{item['us_id']}}" > {{item['title']}}</option>                  
+                   </datalist>
+                   <datalist *ngIf="bugLink==0" id="browsers3bug">
+                      <option *ngFor="let item of tasks" value="{{item['task_id']}}" > {{item['title']}}</option>                  
+                  </datalist>
+                   <div *ngIf="UsError==1">
+                   <br>
+                   <br>
+                   <p style="color:red;clear: both;">please select from the list</p>
+                 </div>
+
+                   <div style="clear:both" *ngIf="bugform.submitted && link.invalid" class="invalid-feedback">
+                      <div style="color:red;" *ngIf="link.errors.required">Link is required</div>
+                  </div>
+               </div>
+                <div *ngIf="bugEdit==0" class="form-group">
+                    <label style=" display: block;clear: both; float:left; margin-top:10px;"><mark style="background-color:white;color:red;">*</mark> link: </label>
+                   <div style=" display: block; width:50%; margin-left:50px; float:left; margin-top:10px;">
+                    <label  (click)="radioUS()" class="radio-inline"><input type="radio" id="radioUs" name="optradio" checked>User Story</label>
+                    <label  (click)="radioTask()" class="radio-inline"><input type="radio" id="radioTask" name="optradio">Task</label>
+                  </div> 
+                    <input style=" display: block; width:50%; margin-left:50px; float:left; margin-top:10px;"  (click)="UsClick()" id="buglink" pattern="[0-9]+"   type="text" class="form-control" name="link" list="browsers3bug" [(ngModel)]="model.link" #link="ngModel"  [ngClass]="{ 'is-invalid': bugform.submitted && link.invalid }"  required/>
+                  
+                     <datalist *ngIf="bugLink==1" id="browsers3bug">
+                         <option *ngFor="let item of userStory" value="{{item['us_id']}}" > {{item['title']}}</option>                  
+                     </datalist>
+                     <datalist *ngIf="bugLink==0" id="browsers3bug">
+                        <option *ngFor="let item of tasks" value="{{item['task_id']}}" > {{item['title']}}</option>                  
+                    </datalist>
+                     <div *ngIf="UsError==1">
+                     <br>
+                     <br>
+                     <p style="color:red;clear: both;">please select from the list</p>
+                   </div>
+
+                     <div style="clear:both" *ngIf="bugform.submitted && link.invalid" class="invalid-feedback">
+                        <div style="color:red;" *ngIf="link.errors.required">Link is required</div>
+                         <div style="color:red;" *ngIf="link.errors.pattern">please select from the list</div>
+                    </div>
+                 </div>
+                
+
+
+
+                <div class="form-group">
+                        
+                        <label style=" display: block;clear: both; float:left;  margin-top: 10px;">state: </label>
+                        <select  id="bugstate" name="state" [(ngModel)]="model.state" #state="ngModel" class="form-control"  style=" display: block; margin-left: 10px; float:left; margin-top: 10px; width: 200px;">
+                              <option selected="selected" value="New" >New</option>
+                              <option value="In Progress">In Progress</option>
+                              <option value="Completed">Completed</option>
+                              <option value="Accepted">Accepted</option>
+                              <option value="deleted">Deleted</option>
+                            </select>
+                     </div>
+                 
+                    
+               
+                <div class="form-group">
+  
+                <label style=" display: block; float:left; margin-left: 20px;  margin-top: 10px;">Iteration: </label>
+                <input class="form-control" (click)="iterationClick()" [(ngModel)]="model.iteration" id="bugiteration" #iteration="ngModel" style=" display: block;   margin-left: 10px; float:left; margin-top: 10px; width: 200px;" list="browsers2" name="browser">
+                <datalist id="browsers2"  >
+                  <option *ngFor="let item of iterations" value="{{item['title']}}">               
+                </datalist>
+                
+                <div style="clear: both;" *ngIf="iterationError==1">
+                
+                  <p style="color:red;">please select from the list</p>
+                </div>                  
+                </div>
+
+                 <!-- <button style="float: right; margin-top: 10px; margin-left:10px;" class="btn btn-warning" (click)="history($event)" id="history">history</button>   
+                 
+                <button style="float: right; margin-top: 10px;"class="btn btn-info" (click)="details($event)" id="details" >details</button>
+              -->
+              <div  id="divdetails" >
+                  <div style="float:left; width:70%; margin-top: 20px;">
+                 <div style="clear:both;" >
+                        <div class="panel panel-info">
+                                <div style="height:40px;" class="panel-heading">
+                                        <label style="clear:both; float:left;">Repro Steps</label>
+                                        <p>
+                        
+                                        <!-- <a class="btn btn-primary" >
+                                                Link with href
+                                              </a>  -->
+                                              <a id="arrowup" (click)="arrowupbug()"  style="display: none; float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExamplebug" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                     <span class="glyphicon glyphicon-chevron-up"></span>
+                                                   </a>
+                 
+                                              <a id="arrowdown" (click)="arrowdownbug()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExamplebug" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                         <span class="glyphicon glyphicon-chevron-down"></span>
+                                                       </a>
+                                
+                                            </p>
+                                </div>
+                                <div class="panel-body">
+                                        <div style="clear:both;" class="collapse" id="collapseExamplebug">
+                                                <div class="card card-body">
+                                                <textarea id="bugReproSteps" [(ngModel)]="model.repro_steps" name="reprosteps" #reprosteps="ngModel" ></textarea>
+                                                </div>
+                                              </div>
+                                </div>
+                              </div>
+                               
+                    </div>
+    
+                    <div style="clear:both;" >
+                            <div class="panel panel-success">
+                                    <div style="height:40px;" class="panel-heading">
+                                            <label style="clear:both; float:left; ">System info</label>
+                                            <p>
+                            
+                                            <!-- <a class="btn btn-primary" >
+                                                    Link with href
+                                                  </a>  -->
+                                                  <a id="arrowup2" (click)="arrowup2bug()"  style="display: none; float:left; margin-left: 20px;  " data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                         <span style="color:green" class="glyphicon glyphicon-chevron-up"></span>
+                                                       </a>
+                     
+                                                  <a id="arrowdown2" (click)="arrowdown2bug()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample1bug" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                             <span style="color:green" class="glyphicon glyphicon-chevron-down"></span>
+                                                           </a>
+                                    
+                                                </p>
+                                    </div>
+                                    <div class="panel-body">
+                                            <div style="clear:both;" class="collapse" id="collapseExample1bug">
+                                                    <div class="card card-body">
+                                                    <textarea id="bugsysteminfo" [(ngModel)]="model.system_info" name="bugsysteminfo" #bugsysteminfo="ngModel"></textarea>
+                                                    </div>
+                                                  </div>
+                                    </div>
+                                  </div>
+                            
+                                  
+                        </div>
+                        
+                    </div>
+                    <div style=" margin-left: 72%; ">
+                        <div style=" float: left; margin-top: 20px; width:100%;">
+                                <div class="panel panel-info">
+                                        <div class="panel-heading" style="height:40px; ">
+                                                <label style="float:left; " >Planning</label>
+                                                <a id="arrowup3" (click)="arrowup3bug()" style=" margin-left:10px;float:left;display: none;" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                                                <a id="arrowdown3" (click)="arrowdown3bug()" style=" margin-left:10px;float:left; " data-toggle="collapse" href="#collapseExample2bug" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                                        </div>
+                                        <div class="panel-body">
+                                                <div style="clear:left;margin-top:0px;" class="collapse" id="collapseExample2bug">
+                                                        <div >
+                                                       <label style="float:left; text-align: left; margin-top: 10px;" >priority</label>
+                                                        <select class="form-control" id="bugpriority" [(ngModel)]="model.priority" name="priority" #priority="ngModel" >
+                                                              <option value="1">1</option>
+                                                              <option value="2">2</option>
+                                                              <option value="3">3</option>
+                                                              <option value="4">4</option>
+                                                            </select>
+                                                            <label style="float:left; text-align: left; margin-top: 10px;" >severity</label>
+                                                            <select class="form-control" id="bugseverity" [(ngModel)]="model.severity" name="severity" #severity="ngModel" >
+                                                                  <option value="1">1</option>
+                                                                  <option value="2">2</option>
+                                                                  <option value="3">3</option>
+                                                                </select>
+                                                        </div>
+                                                      </div>
+                                        </div>
+                                      </div>
+                            
+    
+                                
+                        </div>
+                           
+                                
+                        </div>
+                        
+                        <div style=" margin-left: 72%; ">
+                            <div style=" float: left;width:100%;">
+                                    <div class="panel panel-info">
+                                            <div class="panel-heading" style="height:40px; ">
+                                                    <label style="float:left; ">Effort(hours)</label>
+                                                    <a id="arrowup4" (click)="arrowup4()" style=" margin-left:10px;float:left;display: none;" data-toggle="collapse" href="#collapseExample4bug" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                                                    <a id="arrowdown4" (click)="arrowdown4()" style=" margin-left:10px;float:left; " data-toggle="collapse" href="#collapseExample4bug" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                                            </div>
+                                            <div class="panel-body">
+                                                    <div style="clear:left;margin-top:0px;" class="collapse" id="collapseExample4bug">
+                                                            <div  >
+                                                            <label style="float:left;text-align: left;">Original Estimate</label>
+                                                            <input id="bugoriginal_estimate"  class="form-control" type="number" [(ngModel)]="model.OriginalEstimate" name="OriginalEstimate" #OriginalEstimate="ngModel" />
+                                                            <label style="float:left;text-align: left;">Remaining</label>
+                                                            <input id="bugremaining"  class="form-control" type="number"[(ngModel)]="model.RemainingTime" name="RemainingTime" #RemainingTime="ngModel" />
+                                                            <label style="float:left;text-align: left;">Completed</label>
+                                                            <input id="bugcompleted"  class="form-control" type="number" [(ngModel)]="model.CompletedTime" name="CompletedTime" #CompletedTime="ngModel" />
+                                                            </div>
+                                                          </div>
+                                            </div>
+                                          </div>
+                                
+        
+                                    
+                            </div>
+                               
+                                    
+                            </div>
+                        </div>
+           
+              </div>
+        
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success"> Save</button>
+             <button (click)="closeBugForm()" data-dismiss="modal" class="btn btn-danger" >close</button>
+              </div>
+            </form>
+            </div>
+        
+          </div>
+
+</div>

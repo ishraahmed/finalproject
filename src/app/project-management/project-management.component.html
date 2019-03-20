@@ -1,0 +1,65 @@
+
+<div style="height:80px; background-color:#033A58; 
+top: 0;
+left: 0;
+right: 0;
+">
+
+  <div id="name">
+    <p id="p" ><b>ICode Digita</b></p>
+    <span  id="logout" (click)="logout()"  class="glyphicon glyphicon-log-out"></span>
+  </div>
+</div>
+<div class="nav-side-menu">
+    <div class="brand" >
+        <img style="float:left; margin-top:10px; margin-left:20px;" src="assets/img/imageedit_1_5512066219.png" alt="Smiley face" height="60" width="60" >
+        <div style="padding-top:10px;" >
+        <p style="font-size:15px; margin-right: 60px;" ><b> Stark Employees </b></p>
+        <p style="font-size:15px; margin-right: 60px;" ><b> Evaluation </b></p>
+      </div>
+    </div>
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+  
+        <div class="menu-list">
+  
+            <ul id="menu-content" class="menu-content collapse out">
+                <li id="overview" style="margin-top:20px;" (click)="overviewClick()" data-toggle="collapse"  class="collapsed active ">
+                  <a [routerLink]="['overview']">
+                  <i class="fa fa-dashboard fa-lg"></i> Project Overview
+                  </a>
+                </li>
+               
+
+                <li id="board" (click)="boardClick()">
+                  <a [routerLink]="['boards']"><i class="fa fa-user fa-lg"></i>  Boards</a>
+                </li>
+
+                
+                
+
+                    <li id="backlog" (click)="backlogClick()" >
+                      <a [routerLink]="['backlogs']">
+                      <i class="fa fa-users fa-lg"></i> Backlogs/Sprints
+                      </a>
+                    </li>
+
+                    <li id="workItems" (click)="workItemsClick()">
+                      <a [routerLink]="['workitems']">
+                        <i class="fa fa-user fa-lg"></i> Work Items</a>
+                    </li>
+
+                    <li id="dashboard" (click)="dashboardClick()">
+                      <a><i class="fa fa-user fa-lg"></i> Dashboard</a>
+                    </li>
+<!-- 
+                 <li>
+                  <a [routerLink]="['criteria']">
+                  <i class="fa fa-users fa-lg"></i>  Work Items
+                  </a>
+                </li> -->
+            </ul>
+     </div>
+</div>
+<div id="main" style="margin-top: 20px;" >
+<router-outlet></router-outlet>
+</div>

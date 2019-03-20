@@ -1,0 +1,70 @@
+ 
+<div style="margin-right:20px;" id="as">
+  <a id="a">
+sda
+  </a>
+    <div style="float: left; margin-bottom:20px;" class="dropdown" id="dad">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{dropdownValue}}
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a (click)="getSelectedDropdown('1')" >Section</a></li>
+          <li><a id="rad" (click)="getSelectedDropdown('2')">Radio Buttons</a></li>
+          <li><a data-toggle="modal" data-target="#myModal" (click)="getSelectedDropdown('3')">Checkboxes</a></li>
+          <li><a (click)="getSelectedDropdown('4')">Questions</a></li>
+          <li><a (click)="getSelectedDropdown('6')">Label</a></li>
+        </ul>
+      </div>
+      <button style="float:right;" (click)="addElement()">
+        add
+      </button>
+      
+</div>
+
+
+  <button (click)="save()" >save</button>
+
+  <div style="clear:both; margin-right: 20px;" id="formDiv">
+
+    </div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Checkboxes</h4>
+      </div>
+      <div class="modal-body">
+        <label>Enter number of check boxes</label>
+        <input id="checkboxNum" type="number" />
+      </div>
+      <div class="modal-footer">
+        <button (click)="getcheckboxNum()" >save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="radModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Checkboxes</h4>
+        </div>
+        <div class="modal-body">
+          <label>Enter number of check boxes</label>
+          <input id="radioboxNum" type="number" />
+        </div>
+        <div class="modal-footer">
+          <button (click)="getradioboxNum()" >save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

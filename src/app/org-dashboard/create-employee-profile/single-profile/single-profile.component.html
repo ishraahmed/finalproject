@@ -1,0 +1,152 @@
+<!-- <div class="form-group has-error">
+  <label class="control-label" for="inputError">Input with error</label>
+  <input type="text" class="form-control" id="inputError">
+  <span class="help-block">Please correct the error</span>
+</div> -->
+    <form id="d" name="form" (ngSubmit)="f.form.valid && onSubmit();" id="f"  #f="ngForm" novalidate>
+      
+        <div class="form-group">
+            <label for="Firstname"><mark class="red">*</mark>First Name:</label>
+            <input type="text" class="form-control" name="Firstname" [(ngModel)]="model.Firstname" #Firstname="ngModel" id="text" pattern="[a-zA-Z]+" required  />
+            <div *ngIf="f.submitted && Firstname.invalid"  class="invalid-feedback" >
+
+              <p style="color:red;" *ngIf="Firstname.errors.required">
+                  The name is required
+              </p>
+              <p style="color:red;" *ngIf="Firstname?.hasError('pattern')">
+                  letters only
+              </p>
+              
+          </div>
+          </div>
+
+          <div class="form-group">
+            <label for="Lastname"><mark class="red">*</mark>Last Name:</label>
+            <input type="text" class="form-control" name="Lastname" [(ngModel)]="model.Lastname" #Lastname="ngModel" id="text1"  required pattern="[a-zA-Z]+" />
+            <div *ngIf="f.submitted && Lastname.invalid"  class="invalid-feedback" >
+
+              <p style="color:red;" *ngIf="Lastname.errors.required">
+                  The name is required
+              </p>
+              <p style="color:red;" *ngIf="Lastname.errors.pattern">
+                  The name is required
+              </p>
+              
+          </div>
+          </div>
+          
+            <div class="form-group">
+              <label for="cnic">CNIC:</label>
+              <input type="text" class="form-control" placeholder="xxxxxxx-xxxxx-x" name="CNIC" [(ngModel)]="model.CNIC" #CNIC="ngModel" id="cnic" pattern="\d{7}\-\d{5}\-\d{1}">
+              <div *ngIf="f.submitted && CNIC.invalid"  class="invalid-feedback" >
+
+                  <p style="color:red;" *ngIf="CNIC.errors.pattern">
+                      invalid
+                  </p>
+                  
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="PhoneNo">Phone No:</label>
+              <input type="text" placeholder="+9265246715" class="form-control" name="PhoneNo" [(ngModel)]="model.Phone_No" #PhoneNo="ngModel" id="PhoneNo">
+            </div>
+            <!-- <div class="form-group">
+              
+              <label for="address">Address:</label>
+              <input type="text" class="form-control" name="address" [(ngModel)]="model.address" #address="ngModel" id="address">
+            </div> -->
+            <div class="form-group">
+              <label for="email"><mark class="red">*</mark>Email address:</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" id="email" [ngClass]="{ 'has-error': f.submitted && email.invalid }" required email>
+              <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                <div style="color:red;" *ngIf="email.errors.required">Email is required</div>
+                <div style="color:red;" *ngIf="email.errors.email">Email must be a valid email address</div>
+            </div>
+            
+            <div style="color:red;" *ngIf="inserted!=1">An employee with this email address is already registered from your organization to this system.</div>
+            </div>
+            <!-- <div class="form-group">
+              <label for="pwd">Password:</label>
+              <input  type="password" class="form-control" name="password" [(ngModel)]="model.password"  #password="ngModel" id="pwd">
+            </div> -->
+
+            <div class="form-group">
+              <label for="Designation"> <mark class="red">*</mark> Designation:</label>
+              <select class="form-control" name="Designation" [(ngModel)]="model.Designation"  #Designation="ngModel" id="Designation" required > 
+                  <option value="admin"> Admin </option>
+                  <option value="manager" > Manager </option>
+                  <option value="employee">Employee</option>
+
+              </select>
+              <div *ngIf="f.submitted && Designation.invalid"  class="invalid-feedback" >
+  
+                <p style="color:red;" *ngIf="Designation.errors.required">
+                    The Designation is required
+                </p>
+                
+            </div>
+            </div>
+
+            <!-- <div class="form-group">
+                <label for="Designation">Designation:</label>
+                <input  type="text" class="form-control" name="Designation" [(ngModel)]="model.Designation"  #Designation="ngModel" id="Designation">
+              </div> -->
+
+              <div class="form-group">
+                <label for="domain"> <mark class="red">*</mark> Domain:</label>
+                <input  type="text" class="form-control" name="domain" [(ngModel)]="model.domain"  #domain="ngModel" id="domain" required>
+                <div *ngIf="f.submitted && domain.invalid"  class="invalid-feedback" >
+    
+                  <p style="color:red;" *ngIf="domain.errors.required">
+                      The Designation is required
+                  </p>
+                  
+              </div>
+              </div>
+
+              <!-- <div class="form-group">
+                  <label for="domain">Domain:</label>
+                  <input  type="text" class="form-control" name="domain" [(ngModel)]="model.domain"  #domain="ngModel" id="domain">
+                </div> -->
+
+                <div style="width:50%;" class="form-group">
+                        <label for="Skill">Skill Set:</label>
+                        <div  class="input-group">
+                                <input *ngFor="let item of items; index as i;" type="text" name="{{item}}" id="{{item}}" class="form-control" >
+                   
+                                <span style="cursor:pointer;" class="input-group-addon" (click)="addInput()">Add</span>
+                               
+                               
+                        </div>
+                    
+                    <!-- <input *ngFor="let item of items" [(ngModel)]="model.skill" type="text" name="firstname" class="form-control">
+        <button (click)="addNew()">Add field</button> -->
+                    <!-- <button type="button" (click)="addInput()">+</button> -->
+                    <!-- <input  type="text" class="form-control" name="Skill" [(ngModel)]="model.Skill"   id="Skill">
+                   
+                    <input  type="text" class="form-control" name="{{abr}}"  id="{{abr}}"> -->
+
+                </div>
+                  
+            <div id="someDiv1"  class="loader"> </div>
+            <div class="clearfix">  </div>
+            <div id="someDiv" class="alert alert-success">
+              <strong>Success!</strong> Employee record has been added in the system. 
+            </div>
+  <button *ngIf="first==1" style="margin-bottom:10px; padding-left:30px; padding-right:30px; " type="submit" class="btn btn-primary">Save</button>
+  <button *ngIf="first==0" style="margin-bottom:10px; padding-left:20px; padding-right:20px;" type="reset" (click)="fun(); f.reset()" class="btn btn-primary">Save Another</button>
+  </form>
+
+
+<!-- <div class="left">
+
+</div>
+<div class="right1" >
+<img />
+<button type="button" class="btn btn-success">Upload Image</button>
+
+</div>
+<br>
+<div style="clear:both"></div>
+<button id="ab" type="button" style="width:100px;  margin-top:20px; margin-bottom: 20px;" class="btn btn-info">Save</button>  -->

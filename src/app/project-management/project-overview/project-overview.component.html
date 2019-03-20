@@ -1,0 +1,15 @@
+<div style="width:98%;" class="panel panel-primary">
+  <div class="panel-heading">Team</div>
+  <div class="panel-body">
+   <p *ngFor="let item of team">{{item['username']}} </p>
+  </div>
+</div>
+<div style="width:98%;" class="panel panel-primary">
+  <div class="panel-heading">Total Story Points {{totalSP}}</div>
+  <div class="panel-body">
+      <li> <mark style="color:#14937a">New</mark>  {{newSP}}</li>
+      <li> <mark style="color:#cd8109">In Progress</mark>  {{activeSP}}</li>
+      <li> <mark style="color:#a12f23">Completed</mark>  {{completedSP}}</li>
+      <li> <mark style="color:#1d6391">Accepted</mark>  {{acceptedSP}}</li>
+  </div>
+</div>

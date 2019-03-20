@@ -1,0 +1,114 @@
+
+<button style="margin-bottom:10px;"><a href="src\assets\New Microsoft Excel Worksheet (2).xlsx"> please download sample file </a></button>
+<div style="margin-right:10px; margin-top: 10px;" class="alert alert-info">
+   
+    <strong>Attention!</strong> Empty cells in the excel sheet must be <a href="#" class="alert-link">filled with null.</a>
+    
+  </div>
+  
+
+<p>
+  Upload excel file to create employee profiles.
+</p>
+
+<input type="file" style="display: inline-block;" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">
+<button style="margin-left:10px;" type="button" class="btn btn-info"  (click)="Upload(); " >Upload</button>
+
+
+
+<div class="tablediv">
+  
+<table  class="table table-bordered table-striped .table-responsive ">
+  <thead >
+  <tr style="background-color:dodgerblue">
+    <th *ngFor="let item of keys;">
+      
+     {{item}}
+     
+    </th>
+  </tr>
+</thead>
+
+<tbody>
+  <tr *ngFor="let item of dataq; let i = index;">
+   <td *ngFor="let keyy of ObjectKeys(item);">
+     {{item[keyy]}}
+    </td>
+  </tr>
+
+</tbody>
+  
+</table>
+</div>
+
+<button (click)="save()" style="margin-bottom:10px; margin-top:10px;" type="button" class="btn btn-primary" *ngIf="expanded == true">Create Profiles</button>
+<button *ngIf="load==0"  style="display:inline-block;margin-left: 20px; background-color: white;"  class="loader1"></button>
+
+<div *ngIf=" keyError==1" class="alert alert-danger">
+    <strong>Error!</strong> Please refer to the sample file.The feilds should be same as the file.
+  
+  </div> 
+<div *ngIf="nullError==1" class="alert alert-danger">
+    <strong>Error!</strong> Fisrtname Lastname Designation Domain and email should not be null
+  
+  </div> 
+  <div *ngIf="LastnameError==1 || designationError==1 || FirstnameError==1
+|| this.CnicError==1 || this.emailError==1" class="alert alert-danger">
+<div *ngIf="LastnameError==1">
+    <strong >Error!</strong> Lastnames should only contains alphabets.
+    <br>
+</div>
+<div *ngIf="FirstnameError==1">
+    <strong >Error!</strong> Firstnames should only contains alphabets
+    <br>
+</div>     
+     
+<div *ngIf="designationError==1">
+    <strong  >Error!</strong> Desigation can only be manager, employee or admin.
+    <br>
+</div>
+<div *ngIf="this.CnicError==1">
+    <strong  >Error!</strong> some cnic is not valid
+      <br>
+</div> 
+<div *ngIf="this.emailError==1">
+    <strong  >Error!</strong> some email is not valid
+</div>      
+      
+      
+      
+    </div> 
+  
+
+<div *ngIf="mad==1" class="alert alert-success">
+    <strong>Success!</strong> {{no}} profile(s) created.
+  </div>
+
+<div *ngIf="retr==1" class="tablediv">
+    <div class="alert alert-danger">
+        <strong>Alert!</strong> The follwing profiles cannot be made as the emails already exists.
+        <span style="font-size:20px; float:right;" class="glyphicon glyphicon-question-sign"></span>
+      </div> 
+  <table  class="table table-bordered table-striped ping-cart.table-responsive ">
+    <thead >
+    <tr style="background-color:dodgerblue">
+      <th *ngFor="let item of keys;">
+        
+       {{item}}
+       
+      </th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <ng-container > 
+    <tr *ngFor="let item of notMade; let i = index;">
+     <td *ngFor="let keyy of ObjectKeys(item);">
+       {{item[keyy]}}
+      </td>
+    </tr>
+  </ng-container>
+  </tbody>
+    
+  </table>
+  </div>

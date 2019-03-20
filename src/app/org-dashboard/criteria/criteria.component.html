@@ -1,0 +1,25 @@
+<input type="date" >
+<a>manager</a>
+<a>employee</a>
+<router-outlet style="margin-top:60px; top:80px;"></router-outlet>
+<div>
+  <div *ngFor="let item of generateArray(form)">
+    <li *ngFor="let i of generateArray(item.value)">
+      <a *ngIf="i.key=='section'">
+        section {{i.value}}
+      </a>
+      <a *ngIf="i.key=='radio'">
+          radio {{i.value[0]}}
+      </a>
+      <a *ngIf="i.key=='label'">
+          label {{i.value}}
+      </a>
+      <a *ngIf="i.key=='question'">
+          label {{i.value}}
+      </a>
+      <a *ngIf="i.key=='checkbox'">
+          radio {{i.value[0]}}
+      </a>
+    </li>
+  </div>
+</div>

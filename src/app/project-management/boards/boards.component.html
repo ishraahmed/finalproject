@@ -1,0 +1,401 @@
+
+<html lang="en">
+  <head>
+<link href='http://fonts.googleapis.com/css?family=ABeeZee' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+
+<div class="container-fluid">
+    <div *ngIf="isMember==0" >
+<h2 style="color:black">this user is not part of this project</h2>
+</div>
+<div *ngIf="isMember!=0" class="row-fluid">
+
+
+        <h1>Project Board</h1>
+        
+        
+</div>
+
+<div *ngIf="isMember!=0" style="width:100%;" class="row-fluid  parent">
+
+        <div style="width:25%;"  class="span3 tiny ">
+                <div class="pricing-table-header-tiny">
+                    <h3>New</h3>
+                </div>
+                <div class="pricing-table-features">
+                        <div *ngFor="let item of userStory; let i = index" class="card card-default">
+                                <div class="card-body card-7-5">
+                                    <label style="float:left;"  id="l{{item['us_id']}}"> {{item['us_id']}}  {{item['title']}}</label>
+                                   <span style="float:right;" class="glyphicon glyphicon-pencil" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal" ></span>
+                                    <!-- <ul style="float: right;" class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                
+                                                <a class="dropdown-item" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal">Edit</a>
+                                                <a class="dropdown-item" href="#">Delete</a>
+                                                <a class="dropdown-item" href="#">Move to iteration</a>
+                                            </div>
+                                        </ul> -->
+                                    <input style="display:none;" id="i{{item['us_id']}}" class="form-control"/>
+                                    <button style="display:none; margin-top:5px;" id="b{{item['us_id']}}" (click)="save($event)" class="btn btn-success btn-s">Save</button>
+                                    <div style="width: 100%;" class="parent" id="s{{item['us_id']}}">
+                                            <div>
+                                            <label style=" float: left; margin-top:10px;">state</label>
+                                            </div>
+                                            <div>
+                                                    <select id="select.{{item['us_id']}}"  (click)="focus($event)" (change)="select($event)" style="width:120px;" class="form-control">
+                                                            <option value="New">New</option>
+                                                            <option value="In Progress">In Progress</option>
+                                                            <option value="Completed">Completed</option>
+                                                            <option value="Accepted">Accepted</option>
+                                                        </select>
+                                            </div>
+                                     </div>  
+
+                                 </div>
+                                 
+                                </div>
+                        <div id="h{{item}}" *ngFor="let item of newUserStory; let i = index" class="card card-default">
+                                <div id="h{{item}}" class="card-body card-7-5">
+                                    <form  name="form" id="b{{item}}" (ngSubmit)="f.form.valid && save($event);" #f="ngForm" novalidate>
+                                            <div class="form-group">
+                                                    <!-- <label for="Username">Username</label>
+                                                    <input type="text" class="form-control"   /> -->
+                                                   
+                                                    <label style="display:none;" id="l{{item}}"></label>
+                                                    <input value=" " id="i{{item}}" class="form-control" name="title" [(ngModel)]="model.title" #title="ngModel" [ngClass]="{ 'is-invalid': f.submitted && title.invalid }" required/>
+                                                       <div *ngIf="f.submitted && title.invalid" class="invalid-feedback">
+                                                        <div style="color:red;" *ngIf="title.errors.required">Title is required</div>
+                                                        <!-- <div style="color:red;" *ngIf="email.errors.email">Email must be a valid email address</div> -->
+                                                    </div>
+                                                </div>
+                                   
+                                    <button type="submit" style="margin-top:5px;" id="b{{item}}"  class="btn btn-success btn-s">Save</button>
+                                    <!-- (click)="save($event)"     -->
+                                </form>
+                                 </div>
+                                 
+                                </div>
+                </div>
+                <div class="pricing-table-signup-tiny">
+                        <button  (click)="add($event)" type="button" class="btn btn-success btn-sm">
+                                <span class="glyphicon glyphicon-plus"></span> Add User Story
+                              </button>
+                 
+                </div>
+            </div>
+   
+
+    <div style="width:25%;" class="span3 small">
+        <div class="pricing-table-header-small">
+            <h3>In Progess</h3>
+        </div>
+        <div class="pricing-table-features">
+        <div *ngFor="let item of InProgressUserStory; let i = index" class="card card-default">
+            <div class="card-body card-7-5">
+                <label style="float:left;"  id="l{{item['us_id']}}"> {{item['us_id']}}  {{item['title']}}</label>
+                <span style="float:right;" class="glyphicon glyphicon-pencil" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal" ></span>
+                                   
+                <!-- <ul style="float: right;" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            
+                            <a class="dropdown-item" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                            <a class="dropdown-item" href="#">Move to iteration</a>
+                        </div>
+                    </ul> -->
+                <input style="display:none;" id="i{{item['us_id']}}" class="form-control"/>
+                <button style="display:none; margin-top:5px;" id="b{{item['us_id']}}" (click)="save($event)" class="btn btn-success btn-s">Save</button>
+                <div style="width: 100%;" class="parent" id="s{{item['us_id']}}">
+                        <div>
+                        <label style=" float: left; margin-top:10px;">state</label>
+                        </div>
+                        <div>
+                                <select id="select.{{item['us_id']}}" (click)="focus($event)" (change)="select($event)" style="width:120px;" class="form-control">
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="New" >New</option>  
+                                    <option value="Completed">Completed</option>
+                                    <option value="Accepted">Accepted</option>
+                                    </select>
+                        </div>
+                 </div>  
+
+             </div>
+             
+            </div>
+        </div>
+        <!-- <div class="pricing-table-signup-small">
+          <p><a href="#">Sign Up</a></p>
+        </div> -->
+    </div>
+
+
+    <div style="width:25%;" class="span3 pro">
+        <div class="pricing-table-header-pro">
+            <h3>Completed</h3>
+        </div>
+        <div class="pricing-table-features">
+            <div *ngFor="let item of CompletedUserStory; let i = index" class="card card-default">
+                <div class="card-body card-7-5">
+                    <label style="float:left;"  id="l{{item['us_id']}}"> {{item['us_id']}}  {{item['title']}}</label>
+                    <span style="float:right;" class="glyphicon glyphicon-pencil" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal" ></span>
+                 
+                    <!-- <ul style="float: right;" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                                <a class="dropdown-item" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal">Edit</a>
+                                <a class="dropdown-item" href="#">Delete</a>
+                                <a class="dropdown-item" href="#">Move to iteration</a>
+                            </div>
+                        </ul> -->
+                    <input style="display:none;" id="i{{item['us_id']}}" class="form-control"/>
+                    <button style="display:none; margin-top:5px;" id="b{{item['us_id']}}" (click)="save($event)" class="btn btn-success btn-s">Save</button>
+                    <div style="width: 100%;" class="parent" id="s{{item['us_id']}}">
+                            <div>
+                            <label style="float: left; margin-top:10px;">state</label>
+                            </div>
+                            <div>
+                                    <select id="select.{{item['us_id']}}" (click)="focus($event)" (change)="select($event)" style="width:120px;" class="form-control">
+                                        <option value="Completed">Completed</option>
+                                        <option value="New" >New</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Accepted">Accepted</option>
+                                        </select>
+                            </div>
+                     </div>  
+    
+                 </div>
+                 
+                </div>
+            </div>
+        <!-- <div class="pricing-table-signup-pro">
+            <p><a href="#">Sign Up</a></p>
+        </div> -->
+    </div>
+
+         
+    <div style="width:25%;" class="span3 medium">
+            <div class="pricing-table-header-medium">
+                <h3>Accepted</h3>
+                
+            </div>
+            <div class="pricing-table-features">
+                <div *ngFor="let item of AcceptedUserStory; let i = index" class="card card-default">
+                    <div class="card-body card-7-5">
+                        <label style="float:left;"  id="l{{item['us_id']}}"> {{item['us_id']}}  {{item['title']}}</label>
+                        <span style="float:right;" class="glyphicon glyphicon-pencil" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal" ></span>
+                 
+                        <!-- <ul style="float: right;" class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    
+                                    <a class="dropdown-item" (click)="edit($event)" id="e.{{item['us_id']}}" data-toggle="modal" data-target="#myModal">Edit</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                    <a class="dropdown-item" href="#">Move to iteration</a>
+                                </div>
+                            </ul> -->
+                        <input style="display:none;" id="i{{item['us_id']}}" class="form-control"/>
+                        <button style="display:none; margin-top:5px;" id="b{{item['us_id']}}" (click)="save($event)" class="btn btn-success btn-s">Save</button>
+                        <div style="width: 100%;" class="parent" id="s{{item['us_id']}}">
+                                <div>
+                                <label style="float: left; margin-top:10px;">state</label>
+                                </div>
+                                <div>
+                                        <select id="select.{{item['us_id']}}" (click)="focus($event)" (change)="select($event)" style="width:120px;" class="form-control">
+                                            <option value="Accepted">Accepted</option>
+                                            <option value="Completed">Completed</option>
+                                        <option value="New" >New</option>
+                                        <option value="In Progress">In Progress</option>
+                                        
+                                                
+                                            </select>
+                                </div>
+                         </div>  
+        
+                     </div>
+                     
+                    </div>
+                </div>   
+    
+            <!-- <div class="pricing-table-signup-medium">
+                <p><a href="#">Sign Up</a></p>
+            </div> -->
+        </div>
+
+
+          
+
+           
+         </div>
+          
+</div>
+
+    </body>
+</html>
+<div id="myModal" data-backdrop="static" data-keyboard="false" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+      
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: 	  #428bca">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 style="color:#0B0B3B ;" class="modal-title"><span style="color:#0B0B3B;" class="glyphicon glyphicon-book"></span> User Story {{id}}</h4>
+            </div>
+      
+            <div style="overflow: auto;" class="modal-body">
+               <!-- <span style="float:left;" class="badge">12 login</span> -->
+              <label style="float:left;">Title</label>
+              <input id="Updatedtitle" class="form-control" style="float:left; width:50%; margin-left: 63px;" placeholder="{{title}}" />
+           <br>
+           <br>
+               <label style=" display: block;clear: both; float:left;">assigned to: </label>
+              <input (click)="assignedClick()" style=" display: block; width:50%; margin-left:  10px; float:left;" id="assigned" class="form-control" list="browsers" name="browser">
+              
+              <datalist id="browsers">
+                  <option *ngFor="let item of emp" value="{{item['name']}}({{item['username']}})" ></option>                  
+              </datalist>
+              <div *ngIf="assignmentError==1">
+              <br>
+              <br>
+              <p style="clear: both;"style="color:red;">please select from the list</p>
+            </div>
+              <label style=" display: block;clear: both; float:left;  margin-top: 10px;">state: </label>
+              <select id="select" (click)="focus($event)" class="form-control"  style=" display: block; margin-left: 10px; float:left; margin-top: 10px; width: 200px;">
+                    <option value="New">New</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Accepted">Accepted</option>
+                  </select>
+              
+
+              <label style=" display: block; float:left; margin-left: 20px;  margin-top: 10px;">Iteration: </label>
+              <input class="form-control" (click)="iterationClick()" style=" display: block;   margin-left: 10px; float:left; margin-top: 10px; width: 200px;" list="browsers2" id="iteration" name="browser">
+              <datalist id="browsers2"  >
+                <option *ngFor="let item of iterations" value="{{item['title']}}">               
+              </datalist>
+              
+              <div style="clear: both;" *ngIf="iterationError==1">
+              
+                <p style="color:red;">please select from the list</p>
+              </div>
+              
+
+              <!-- <button style="float: right; margin-top: 10px; margin-left:10px;" class="btn btn-warning" (click)="history($event)" id="history">history</button>   
+              <button style="float: right; margin-top: 10px;"class="btn btn-info" (click)="details($event)" id="details" >details</button>
+            -->
+              <!-- <input style="float:left; margin-left: 10px;" type="submit"> -->
+              <div  id="divdetails" >
+              <div style="float:left; width:70%; margin-top: 20px;">
+             <div style="clear:both;" >
+                    <div class="panel panel-info">
+                            <div style="height:40px;" class="panel-heading">
+                                    <label style="clear:both; float:left;">Description</label>
+                                    <p>
+                    
+                                    <!-- <a class="btn btn-primary" >
+                                            Link with href
+                                          </a>  -->
+                                          <a id="arrowup" (click)="arrowup()"  style="display: none; float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                 <span class="glyphicon glyphicon-chevron-up"></span>
+                                               </a>
+             
+                                          <a id="arrowdown" (click)="arrowdown()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                     <span class="glyphicon glyphicon-chevron-down"></span>
+                                                   </a>
+                            
+                                        </p>
+                            </div>
+                            <div class="panel-body">
+                                    <div style="clear:both;" class="collapse" id="collapseExample">
+                                            <div class="card card-body">
+                                            <textarea id="description" ></textarea>
+                                            </div>
+                                          </div>
+                            </div>
+                          </div>
+                    
+                           
+                </div>
+
+                <div style="clear:both;" >
+                        <div class="panel panel-success">
+                                <div style="height:40px;" class="panel-heading">
+                                        <label style="clear:both; float:left; ">Acceptance Criteria</label>
+                                        <p>
+                        
+                                        <!-- <a class="btn btn-primary" >
+                                                Link with href
+                                              </a>  -->
+                                              <a id="arrowup2" (click)="arrowup2()"  style="display: none; float:left; margin-left: 20px;  " data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                     <span style="color:green" class="glyphicon glyphicon-chevron-up"></span>
+                                                   </a>
+                 
+                                              <a id="arrowdown2" (click)="arrowdown2()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                         <span style="color:green" class="glyphicon glyphicon-chevron-down"></span>
+                                                       </a>
+                                
+                                            </p>
+                                </div>
+                                <div class="panel-body">
+                                        <div style="clear:both;" class="collapse" id="collapseExample1">
+                                                <div class="card card-body">
+                                                <textarea id="acceptance_criteria"></textarea>
+                                                </div>
+                                              </div>
+                                </div>
+                              </div>
+                        
+                              
+                    </div>
+                    
+                </div>
+                <div style=" margin-left: 72%; ">
+                    <div style=" float: left; margin-top: 20px; width:100%;">
+                            <div class="panel panel-info">
+                                    <div class="panel-heading" style="height:40px; ">
+                                            <label style="float:left; " >Planning</label>
+                                            <a id="arrowup3" (click)="arrowup3()" style=" margin-left:10px;float:left;display: none;" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-up"></span></a>
+                                            <a id="arrowdown3" (click)="arrowdown3()" style=" margin-left:10px;float:left; " data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample1"><span class="glyphicon glyphicon-chevron-down"></span></a>
+                                    </div>
+                                    <div class="panel-body">
+                                            <div style="clear:left;margin-top:0px;" class="collapse" id="collapseExample2">
+                                                    <div class="card card-body" >
+                                                    <label style="float:left;text-align: left;">story points</label>
+                                                    <input id="story_points"  class="form-control" type="number" />
+                                                    <label style="float:left; text-align: left; margin-top: 10px;">priority</label>
+                                                    <select class="form-control" id="priority" >
+                                                          <option value="1">1</option>
+                                                          <option value="2">2</option>
+                                                          <option value="3">3</option>
+                                                          <option value="4">4</option>
+                                                        </select>
+                                                    </div>
+                                                  </div>
+                                    </div>
+                                  </div>
+                        
+
+                            
+                    </div>
+                       
+                            
+                    </div>
+                    </div>
+                <div style="clear:both;float:left;margin-top: 10px; display:none;" id="divhistory" >
+                    <li *ngFor="let item of stateHistory" > {{item}} </li></div>
+   
+            </div>
+      
+            <div class="modal-footer">
+              <button style="margin-right:10px;" type="button" class="btn btn-success"  id={{id}} (click)="saveUS($event)" data-toggle="modal" data-target="#myModal2">Save</button>
+           <button data-dismiss="modal" class="btn btn-danger">close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>

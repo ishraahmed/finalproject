@@ -1,0 +1,216 @@
+
+<label>Filter Projects </label>
+<select style="width:30%; display: inline; margin-left:10px;" class="form-control" id="projS" (change)="changeProjStatus()" >
+  <option value="New" >New</option>
+  <option value="Active" >Active</option>
+  <option value="Close" >Close</option>
+  <option value="Deleted">Deleted</option>
+</select>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog"> 
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">New Project</h4>
+            </div>
+            <div class="modal-body">
+                
+                
+              <label> <mark style="background-color: white; color:red">*</mark> Title </label>
+              <input id="title" class="form-control" (click)="titleFocus()" value="" style="margin-left:5px;width: 60%;" />
+              <p *ngIf="Tierror==1;" style="display: inline; color:red; margin-left:10px; " >required</p>
+              <br>
+              
+              <label> <mark style="background-color: white; color:red">*</mark>  Manager</label>
+              
+              <input (click)="ManagerFocus()" class="form-control" style="margin-left:5px;width: 60%;" id="assigned" list="browsers" name="browser">
+              <datalist id="browsers">
+
+               <option *ngFor="let item of Managers" value="{{item['Firstname']}}  ({{item['username']}})">  </option>
+                  
+              </datalist>
+              <p *ngIf="Merror==1;" style="display: inline; color:red; margin-left:10px;" >required</p>
+              <p style="color:red;margin-left:10px;" *ngIf="Merrorr==1" >Please select employee from list!</p>
+              
+              <br>
+ 
+              <label id="est_time"><mark style="background-color: white; color:red; float: left;">*</mark>  Estimated Time </label>
+              <input  (click)="TimeFocus()" class="form-control" type="number" value="" id="days" placeholder="Days" style="width:20%;margin-left: 5px;display: inline-block;" />
+              <input (click)="TimeFocus()" class="form-control"  type="number" value="" id="months" placeholder="Months" style="width:20%;margin-left: 5px;display: inline-block;" />
+             
+              <input (click)="TimeFocus()" class="form-control" type="number" value="" id="years" placeholder="Years" style="width:20%;margin-left: 5px;display: inline-block;" />
+              <p *ngIf="Terror==1;" style="display: inline; color:red; margin-left:10px;" >required</p>
+
+              <br>
+              <br>
+              <div class="panel panel-info">
+                <div style="height:40px;" class="panel-heading">
+                        <label style="clear:both; float:left;">Description</label>
+                        <p>
+        
+                        <!-- <a class="btn btn-primary" >
+                                Link with href
+                              </a>  -->
+                              <a id="arrowup" (click)="arrowup()"  style="display: none; float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                     <span class="glyphicon glyphicon-chevron-up"></span>
+                                   </a>
+ 
+                              <a id="arrowdown" (click)="arrowdown()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                         <span class="glyphicon glyphicon-chevron-down"></span>
+                                       </a>
+                
+                            </p>
+                </div>
+                <div class="pa nel-body">
+                        <div style="clear:both;" class="collapse" id="collapseExample">
+                                
+                                <textarea style="width:96%;height:100px;margin:2%;" id="description" ></textarea>
+                              
+                              </div>
+                </div>
+              </div>
+
+              <div class="panel panel-warning">
+                <div style="height:40px;" class="panel-heading">
+                        <label style="clear:both; float:left;">Add team members</label>
+                        <p>
+        
+                        <!-- <a class="btn btn-primary" >
+                                Link with href
+                              </a>  -->
+                              <a id="arrowup2" (click)="arrowup2()"  style="display: none; float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
+                                     <span class="glyphicon glyphicon-chevron-up"></span>
+                                   </a>
+ 
+                              <a id="arrowdown2" (click)="arrowdown2()" style="  float:left; margin-left: 20px; " data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
+                                         <span class="glyphicon glyphicon-chevron-down"></span>
+                                       </a>
+                
+                            </p>
+                </div>
+                <div class="pa nel-body">
+                        <div style="clear:both;padding:15px;" class="collapse" id="collapseExample2">
+                                
+                                <!-- <textarea style="width:96%;height:100px;margin:2%;" id="description" ></textarea> -->
+
+                               <div class="form-group">
+                                <label for="sel1">Search By:</label>
+                                <select (change)="changeS($event)" style="width:50%;" class="form-control" id="sel1">
+                                  <option value="name"> name </option>
+                                  <option>skills</option>
+                                  <option>domain</option>
+                                </select>
+                              </div>
+
+<div style="display:none" id="skills" class="form-group">
+  <label for="sel1">Select Skill:</label>
+  <select style="width:50%;" class="form-control" (change)="skillChange($event)" id="sel12">
+    <option *ngFor="let item of skills" value="{{item}}">{{item}}</option>
+  </select>
+</div>
+
+<div style="display:none" id="domains" class="form-group">
+  <label for="sel1">Select Domain:</label>
+  <select style="width:50%;" class="form-control" (change)="domainChange($event)" id="sel13">
+    <option *ngFor="let item of domains" value="{{item}}">{{item}}</option>
+  </select>
+</div>
+
+<div class="form-group">
+   
+  <label>Search Employee:</label>
+  <div style="width:60%;" class="input-group">
+      
+      <input type="text" (click)="memberFocus()" class="form-control"  id="member" list="browsers1" name="browser1">
+      <datalist id="browsers1">
+          <select id="country" >
+              <option *ngFor="let itemm of SuggestedEmp" (click)="abc($event)" value="{{itemm['Firstname']}}  ({{itemm['username']}})"> {{itemm['domain']}} </option>
+            </select>
+       <!-- <option *ngFor="let itemm of SuggestedEmp" (click)="abc($event)" value="{{itemm['Firstname']}}"  data-value="{{itemm['_id']}}" id="{{itemm['_id']}}">  </option>    
+       -->
+      </datalist>
+      <span style="cursor:pointer;" class="input-group-addon" (click)="addMember($event)">Add</span>
+     
+     
+    </div>
+    
+    <p style="color:red;" *ngIf="errorr==1" >Please select employee from list!</p>
+    
+    <br>
+    <table *ngIf="members>0" style="width:60%;">
+        <tr>
+          <th>name</th>
+          <th>username</th> 
+          <th> </th>
+        </tr>
+        <tr *ngFor="let i of teamMembers"> 
+            <td style="width:20%;">{{i['name']}}</td>
+            <td style="width:20%;">{{i['username']}}</td> 
+            <td style="width:10%;"><span style="color:red;" id="{{i['username']}}" (click)="removeMember($event)" class="glyphicon glyphicon-remove"></span></td>
+        </tr>
+      
+      </table>
+    <!-- <label *ngFor="let i of teamMembers"> {{i}}</label> -->
+
+</div>
+
+
+
+
+                              </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button *ngIf="proj_id==0" type="button" (click)="save($event)" class="btn btn-success">Save</button>
+              <button *ngIf="proj_id!=0" type="button" (click)="editSave($event)" class="btn btn-success">Save</button>
+              <button type="button" class="btn btn-danger" style="margin-left:10px;" data-dismiss="modal"> Close </button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+<br>
+<br>
+
+<div *ngFor="let item of proj" style="width:98%;">
+  <div id="project{{item['_id']}}"  class="panel panel-default">
+    <div class="panel-body">
+      <div class="card-body">
+            
+        <h5 class="card-title" (click)="projClick($event)" id="{{item['_id']}}"> {{item['title']}} </h5>
+        <select value="{{item['status']}}" id="select{{item['_id']}}" (focus)="focus($event)" (change)="change($event)" style="margin-left:5px;">
+          <option value="New"> New </option>
+          <option value="Active"> Active </option>
+          <option  value="Close"> Close </option>
+        </select>
+        <span id="delete.{{item['_id']}}" (click)="delete($event)"  style="margin-left:5px;" class="glyphicon glyphicon-trash"></span>
+        <span id="edit.{{item['_id']}}" (click)="edit($event)" data-toggle="modal" data-target="#myModal" style="margin-left:5px;" class="glyphicon glyphicon-pencil"></span>
+
+</div>
+    </div>
+    <div id="Sconfirm{{item['_id']}}" style="display: none; background-color: #e02f2f; color:white; height: 50px;;" class="panel-footer"> 
+    <p style="float:left;" > Are Your sure the status change? </p>
+    <button (click)="yes($event)" type="button" class="btn btn-success" id="yes{{item['_id']}}" style="float:right; margin-left:10px;"> 
+       yes
+    </button>
+    <button (click)="Sno($event)" id="no{{item['_id']}}" type="button" class="btn btn-primary" style="float:right"> 
+      no
+   </button>
+    </div>
+    <div id="Dconfirm{{item['_id']}}" style="display: none; background-color: #e02f2f; color:white; height: 50px;;" class="panel-footer"> 
+      <p style="float:left;"  > Are you sure you want to delete the project? </p>
+      <button (click)="yes($event)" type="button" class="btn btn-success" id="yes{{item['_id']}}" style="float:right; margin-left:10px;"> 
+         yes
+      </button>
+      <button (click)="Dno($event)" id="no{{item['_id']}}" type="button" class="btn btn-primary" style="float:right"> 
+        no
+     </button>
+      </div>
+  </div>
+        
+</div>
+<button *ngIf="isadmin==1;" type="button" class="btn btn-success" (click)="addNew()" data-toggle="modal" data-target="#myModal"><span style="margin-right:5px;" class="glyphicon glyphicon-plus"></span>Add New Project</button>

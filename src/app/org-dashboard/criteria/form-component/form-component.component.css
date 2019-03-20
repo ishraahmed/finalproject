@@ -1,0 +1,35 @@
+div{
+  /* height: 20px;
+  background-color: #4CAF50; */
+}
+label{
+  display: inline-block;
+  color: aqua;
+}
+Button{
+  margin-left: 10px;
+}
+#bur div{
+    background-color: #3e8e41;
+    padding: 5px;
+    display:flex; flex-direction:row;
+}
+
+#bur button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    width: 45%;
+    cursor: pointer; /* Pointer/hand icon */
+    display: block; /* Make the buttons appear below each other */
+  }
+  
+  .btn-group div:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+  }
+  
+  /* Add a background color on hover */
+  .btn-group button:hover {
+    background-color: #3e8e41;
+  }

@@ -1,0 +1,153 @@
+<div style="margin-right:10px;" class="alert alert-success">
+        {{total}} record(s) found.
+       </div>
+
+<div style="overflow-x:auto; margin-right: 20px;">
+<table>
+    <tr>
+        <th></th>
+      <th>Username</th>
+      <th>First Name</th>
+      <th>Last Name</th> 
+      <th>Email</th>
+      <th>Password</th> 
+      <th>Designation</th>
+      <th>Domain</th> 
+      <th>Skills</th>
+      <th>Age</th>
+      <th>Date of birth</th>
+      <th>CNIC</th> 
+      <th>Phone no</th>
+      <th>Address</th>
+      
+    </tr>
+    <tr *ngFor="let item of json; let i = index">
+     <td>
+         <div id="edit{{i}}">
+                <button type="button" value="Edit" (click)="edit($event)" id="{{i}}" name="Edit{{i}}" class="btn btn-primary"> Edit </button>   
+            <!-- <button  id="{{i}}" (click)="edit($event)" class="btn btn-primary btn-xs">Edit</button> -->
+         </div>
+         <div style="display:none;" id="save{{i}}">
+                <table>
+                        <tr>
+                            <td style="border:none">
+                               <button id="{{i}}" (click)="save($event)" class="btn btn-success btn-s">Save</button>
+                             </td>
+                            <td style="border:none"> 
+                                    <button id="{{i}}" (click)="cancel($event)" class="btn btn-primary btn-s">Cancel</button>
+                           </td>
+                        </tr>
+                    </table>
+         </div>
+         <div style="display:none;" id="loader{{i}}">
+                <div class="loader" id="loader-4">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+         </div>
+       </td>
+        <td>
+                
+                <label class="l{{i}}"> {{item['username']}} </label>
+                <input id="{{i}}" name="{{i}}" class="{{i}}" placeholder="username"  type="text"  value="{{item['username']}}" readonly/>
+                        
+            
+        </td>
+
+         <td>
+                <label class="l{{i}}"> {{item['Firstname']}} </label>
+                <input id="{{i}}" name="{{i}}" class="{{i}}" placeholder="Firstname"  type="text"  value="{{item['Firstname']}}"/>
+        </td>
+
+        <td>
+                <label class="l{{i}}"> {{item['Lastname']}} </label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="Lastname" value="{{item['Lastname']}}"/>
+        </td>
+
+        <td>
+                <label class="l{{i}}"> {{item['email']}} </label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="email"  value="{{item['email']}}"/>
+        </td>
+        <td>
+                <label class="l{{i}}"> {{item['password']}} </label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="password"  value="{{item['password']}}"/>
+        </td>
+        <td>
+                <label class="l{{i}}"> {{item['Designation']}} </label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="Designation"  value="{{item['Designation']}}"/>
+        </td>
+
+        <td>
+                <label class="l{{i}}"> {{item['domain']}} </label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="domain"  value="{{item['domain']}}"/>
+        </td>
+
+        <td>
+                <label class="l{{i}}"> {{item['skills']}}</label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="skills"  value="{{item['skills']}}"/>
+
+        </td>
+
+        <td>
+                <label class="l{{i}}"> {{item['age']}}</label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="age"  value="{{item['age']}}"/>
+        </td>
+
+        <td>
+                <label class="l{{i}}">{{item['date_of_birth']}}</label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="date_of_birth"  value="{{item['date_of_birth']}}"/>
+        </td>
+        <td>
+                <label class="l{{i}}">{{item['CNIC']}}</label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="CNIC"  value="{{item['CNIC']}}"/>
+        </td>
+        <td>
+                <label class="l{{i}}">{{item['Phone_No']}}</label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="Phone_No" value="{{item['Phone_No']}}"/>
+        </td> 
+        <td>
+                <label class="l{{i}}">{{item['address']}}</label>
+                <input  name="{{i}}" class="{{i}}" type="text" placeholder="address"  value="{{item['address']}}"/>
+        </td>
+    </tr>
+  </table>
+  
+</div>
+<!-- <div *ngIf="updated==1;" style="margin-right:10px; margin-top:20px;" class="alert alert-success">
+        <strong>Success!</strong> Record updated successfully.
+        </div> -->
+<!-- 
+<div *ngIf="loaded==0" style="margin:auto;" class="loader"> </div>
+
+<ng-container *ngIf="loaded==1">
+        <div style="margin-right:10px;" *ngIf="loaded==1" class="alert alert-success">
+                {{total}} record(s) found.
+               </div>
+<div  *ngFor="let item of json; let i = index"  class="card" >
+    <form name="form"  id={{i}} #f="ngForm">
+     <div class="alert alert-info">
+      <strong>{{i+1}}</strong> 
+      </div>
+    <div *ngFor="let keyy of ObjectKeys(item);" class="card-body">
+        <div  class="form-group">
+            <label for="{{keyy}}">{{keyy}}</label>
+            <input type="text" class="form-control" id="{{i}}" name="{{keyy}}"  placeholder="{{item[keyy]}}" readonly="readonly"/>
+            
+        </div>     
+    </div>
+    <div style="display:none"  id="div{{i}}" class="alert alert-success" >
+        <strong>Success!</strong> Indicates a successful or positive action.
+      </div>
+    <div>
+            <button type="button" value="Edit" (click)="fun($event)" id="{{i}}" name="Edit{{i}}" class="btn btn-primary"> Edit </button>
+            <button  style="margin-left:20px;" (click)="fun1($event)" id="{{i}}" name="Update{{i}}" class="btn btn-success" disabled="disabled"> Update </button>
+            <button  style="margin-left:20px;" type="button"  id="{{i}}" (click)="fun2($event)" name="Cancel{{i}}" class="btn btn-danger" disabled="disabled">Cancel</button>
+            <span id="{{i}}" style="display:none;">
+            <button  style="display:inline-block;margin-left: 20px; background-color: white;"  class="loader1"></button>
+        </span>
+        </div>
+</form>
+    
+  </div>
+</ng-container> -->
